@@ -6,8 +6,12 @@ Steps to run the code.
  - [Repository Structure](#repository-structure)
 
 ## Repository Structure
-Code/
+Code/<br>
+├── app.py<br>
+├── faiss_index_papers.pickle<br>
 ├── papers/<br>
-├── app.py
+├── rag_system.py<br>
+
+
 
 
