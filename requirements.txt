@@ -5,4 +5,4 @@ numpy==1.24.3
 sentence-transformers==2.2.2
 faiss-cpu==1.7.3
 google-generativeai==0.0.3
-pickle5==0.0.11  
+pickle5
