@@ -1,8 +1,8 @@
 import streamlit as st
 from rag_system import RAGSystem
 
-# Initialize RAG system (load index from file)
-rag_system = RAGSystem(papers_folder=None)  # No need to specify papers folder as we are loading from the saved index
+
+rag_system = RAGSystem(papers_folder=None)  
 
 st.title("Research Paper QA Bot")
 

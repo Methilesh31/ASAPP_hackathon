@@ -13,7 +13,7 @@ class RAGSystem:
         self.index_file = index_file
         self.chunk_size = chunk_size
         self.chunk_overlap = chunk_overlap
-        # Using a more efficient and accurate model
+       
         self.model = SentenceTransformer('all-MiniLM-L12-v2')
 
         if papers_folder:
@@ -74,15 +74,15 @@ class RAGSystem:
         print("Getting relevant chunks...")
         query_vector = self.model.encode([query]).astype('float32')
         
-        # Get more candidates than needed
+        
         k = min(top_k * 2, len(self.chunks))
         distances, indices = self.index.search(query_vector, k)
         
-        # Calculate cosine similarity for more accurate ranking
+        
         candidate_embeddings = self.model.encode([self.chunks[i] for i in indices[0]])
         similarities = cosine_similarity(query_vector, candidate_embeddings)[0]
         
-        # Sort by similarity and filter based on threshold
+      
         sorted_indices = np.argsort(similarities)[::-1]
         filtered_indices = [indices[0][i] for i in sorted_indices if similarities[i] >= similarity_threshold][:top_k]
         
@@ -95,7 +95,7 @@ class RAGSystem:
         print("Generating response...")
         relevant_chunks, chunk_metadata = self.get_relevant_chunks(query)
 
-        # Handle cases where no relevant chunks are found or the query is insufficient
+       
         if len(relevant_chunks) == 0:
             return "I'm sorry, but I couldn't find any relevant information to answer your query. Could you please provide a more specific or detailed question?"
 
@@ -103,19 +103,17 @@ class RAGSystem:
                              for chunk, meta in zip(relevant_chunks, chunk_metadata)])
 
         prompt = f"Based on the following excerpts from research papers, answer the question: {query}\n\nContext:\n{context} in 100  words. If the question cannot be answered based solely on the given context, state that there is insufficient information to provide a complete answer."
-        
-        # Configure Google Generative AI
+       
         genai.configure(api_key='AIzaSyAR8TLAcQSgj07VUo2-A4_CUY0WeoseRdw')
         model = genai.GenerativeModel('gemini-1.5-flash-latest')
 
-        # Generate response from the AI model
         response = model.generate_content(prompt)
 
-        # Check if the response indicates insufficient information
+       
         if "insufficient information" in response.text.lower():
             return response.text  # Return without references
 
-        # If a valid response is generated from the AI, include references
+        
         cited_papers = set(meta['title'] for meta in chunk_metadata)
         if len(cited_papers) > 0:
             citations = "References:\n" + "\n".join(cited_papers)
