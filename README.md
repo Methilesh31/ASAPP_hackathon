@@ -30,7 +30,7 @@ requirements.txt
 - The "faiss_index_100_papers.pickle" contains the index (knowlege base) generated using FAISS (Facebook AI Similarity Search) and  pickle module generated on our system.
 - To generate the pickle module run command : <br>
 ```bash
-python .\rag_system papers
+python .\rag_system.py papers
 ```
 - Here "papers" is the folder which contains reasearch papers.
 - Now , to query run command :<br>
